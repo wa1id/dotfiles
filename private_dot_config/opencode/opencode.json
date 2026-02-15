@@ -1,0 +1,22 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "bash": {
+      "*": "ask",
+      "git diff *": "allow",
+      "git log *": "allow",
+      "git status": "allow",
+      "git show *": "allow",
+      "bunx tsc --noEmit": "allow",
+      "bunx eslint *": "allow",
+      "ls *": "allow",
+      "rm *": "ask"
+    },
+    "read": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.*": "deny",
+      "*.env.example": "allow"
+    }
+  }
+}
