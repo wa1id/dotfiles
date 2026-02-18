@@ -5,10 +5,12 @@
       "*": "ask",
       "git diff *": "allow",
       "git log *": "allow",
-      "git status": "allow",
+      "git status *": "allow",
       "git show *": "allow",
       "bunx tsc --noEmit": "allow",
       "bunx eslint *": "allow",
+      "bun run lint *": "allow",
+      "npm run lint *": "allow",
       "ls *": "allow",
       "rm *": "ask"
     },
