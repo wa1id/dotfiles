@@ -13,6 +13,7 @@
       "npm run lint *": "allow",
       "npm run build *": "allow",
       "ls *": "allow",
+      "rg *": "allow",
       "rm *": "ask"
     },
     "read": {
