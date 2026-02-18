@@ -11,6 +11,7 @@
       "bunx eslint *": "allow",
       "bun run lint *": "allow",
       "npm run lint *": "allow",
+      "npm run build *": "allow",
       "ls *": "allow",
       "rm *": "ask"
     },
