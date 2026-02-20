@@ -10,6 +10,7 @@
       "bunx tsc --noEmit": "allow",
       "bunx eslint *": "allow",
       "bun run lint *": "allow",
+      "bun run build *": "allow",
       "npm run lint *": "allow",
       "npm run build *": "allow",
       "ls *": "allow",
