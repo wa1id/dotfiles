@@ -11,6 +11,7 @@
       "bunx eslint *": "allow",
       "bun run lint *": "allow",
       "bun run build *": "allow",
+      "bun run typegen *": "allow",
       "npm run lint *": "allow",
       "npm run build *": "allow",
       "ls *": "allow",
@@ -24,6 +25,13 @@
       "*.env": "deny",
       "*.env.*": "deny",
       "*.env.example": "allow"
+    }
+  },
+  "mcp": {
+    "sanity": {
+      "type": "remote",
+      "url": "https://mcp.sanity.io",
+      "enabled": true
     }
   }
 }
