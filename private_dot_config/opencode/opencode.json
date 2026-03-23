@@ -1,5 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "plugin": ["opencode-claude-auth"],
   "permission": {
     "bash": {
       "*": "ask",
@@ -12,18 +13,27 @@
       "bun run lint *": "allow",
       "bun run build *": "allow",
       "bun run typegen *": "allow",
+      "bun add *": "allow",
       "npm run lint *": "allow",
+      "npm run lint:fix *": "allow",
       "npm run build *": "allow",
       "npm test *": "allow",
       "npx tsc --noEmit": "allow",
       "npx vitest run *": "allow",
       "npx eslint *": "allow",
+      "npm run typecheck *": "allow",
       "ls *": "allow",
       "rg *": "allow",
       "cat *": "allow",
       "grep *": "allow",
       "printf *": "allow",
-      "rm *": "ask"
+      "find *": "allow",
+      "sort *": "allow",
+      "head *": "allow",
+      "rm *": "ask",
+      "go test *": "allow",
+      "gofmt *": "allow",
+      "sqlc generate": "allow"
     },
     "read": {
       "*": "allow",
