@@ -23,6 +23,7 @@
       "npx vitest run *": "allow",
       "npx eslint *": "allow",
       "npm run typecheck *": "allow",
+      "npm ls *": "allow",
       "ls *": "allow",
       "echo *": "allow",
       "rg *": "allow",
