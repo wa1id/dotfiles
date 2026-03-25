@@ -18,6 +18,7 @@
       "npm run lint:fix *": "allow",
       "npm run build *": "allow",
       "npm test *": "allow",
+      "npm run test:compact *": "allow",
       "npx tsc --noEmit": "allow",
       "npx vitest run *": "allow",
       "npx eslint *": "allow",
