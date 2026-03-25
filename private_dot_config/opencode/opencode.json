@@ -24,6 +24,7 @@
       "npx eslint *": "allow",
       "npm run typecheck *": "allow",
       "ls *": "allow",
+      "echo *": "allow",
       "rg *": "allow",
       "cat *": "allow",
       "grep *": "allow",
