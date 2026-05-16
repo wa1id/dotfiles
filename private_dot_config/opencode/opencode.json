@@ -36,7 +36,10 @@
       "rm *": "ask",
       "go test *": "allow",
       "gofmt *": "allow",
-      "sqlc generate": "allow"
+      "sqlc generate": "allow",
+      "gh pr status *": "allow",
+      "gh pr view *": "allow",
+      "gh pr diff *": "allow"
     },
     "read": {
       "*": "allow",
