@@ -4,8 +4,11 @@ Managed with [chezmoi](https://chezmoi.io).
 
 ## New machine bootstrap (Ubuntu)
 
+Fresh Ubuntu desktop doesn't ship with curl or git, so install those first:
+
 ```sh
-sh -c "$(curl -fsSL get.chezmoi.io)" -- init --apply wa1id
+sudo apt update && sudo apt install -y curl git
+sh -c "$(curl -fsSL get.chezmoi.io)" -- -b ~/.local/bin init --apply wa1id
 ```
 
 This applies all dotfiles and runs `.chezmoiscripts/run_once_before_00-install-packages.sh`,
