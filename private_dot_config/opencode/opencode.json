@@ -85,6 +85,13 @@
       "type": "remote",
       "url": "https://mcp.sanity.io",
       "enabled": true
+    },
+    "Sanity": {
+      "headers": {
+        "Authorization": "Bearer skPaVKvxKwZEjCduvtGVaHG70W14S3PWS1OCCDhk1wnt4gGgoBauMOeW3oK21JSLYYak3yuW8m1ng1upi"
+      },
+      "type": "remote",
+      "url": "https://mcp.sanity.io"
     }
   }
 }
