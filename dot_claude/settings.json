@@ -123,7 +123,9 @@
     "figma@claude-plugins-official": false,
     "frontend-design@claude-plugins-official": true,
     "posthog@claude-plugins-official": true,
-    "shopify-ai-toolkit@claude-plugins-official": true
+    "shopify-ai-toolkit@claude-plugins-official": true,
+    "vercel@claude-plugins-official": true,
+    "stripe@claude-plugins-official": true
   },
   "effortLevel": "high",
   "voice": {
@@ -131,7 +133,8 @@
     "mode": "hold"
   },
   "autoMemoryEnabled": false,
-  "theme": "auto",
+  "theme": "dark",
+  "agentPushNotifEnabled": true,
   "autoMode": {
     "allow": [
       "$defaults",
