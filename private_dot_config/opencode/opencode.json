@@ -15,6 +15,9 @@
       "git worktree list": "allow",
       "git remote -v": "allow",
       "git rev-list *": "allow",
+      "git ls-files": "allow",
+      "git ls-files *": "allow",
+      "git check-ignore *": "allow",
       "git merge-base --is-ancestor *": "allow",
       "chezmoi source-path": "allow",
       "chezmoi source-path *": "allow",
@@ -71,7 +74,11 @@
       "sqlc generate": "allow",
       "gh pr status *": "allow",
       "gh pr view *": "allow",
-      "gh pr diff *": "allow"
+      "gh pr diff *": "allow",
+      "gh issue list *": "allow",
+      "gh issue view *": "allow",
+      "gh label list": "allow",
+      "gh label list *": "allow"
     },
     "read": {
       "*": "allow",
