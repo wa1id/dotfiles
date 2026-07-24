@@ -530,6 +530,26 @@ require('lazy').setup({
           -- Find references for the word under your cursor.
           map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
 
+          -- Find references for the enclosing function, from anywhere inside its body.
+          -- Walks up the treesitter tree to the nearest function/method node, jumps to
+          -- its name, then opens the references picker.
+          map('grF', function()
+            local node = vim.treesitter.get_node()
+            while node do
+              if node:type():match 'function' or node:type():match 'method' then
+                local name = node:field('name')[1]
+                if name then
+                  local row, col = name:start()
+                  vim.api.nvim_win_set_cursor(0, { row + 1, col })
+                  require('telescope.builtin').lsp_references()
+                  return
+                end
+              end
+              node = node:parent()
+            end
+            vim.notify('No enclosing function with a name found', vim.log.levels.WARN)
+          end, '[G]oto Enclosing [F]unction References')
+
           -- Jump to the implementation of the word under your cursor.
           --  Useful when your language has ways of declaring types without an actual implementation.
           map('gri', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
@@ -1031,7 +1051,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
