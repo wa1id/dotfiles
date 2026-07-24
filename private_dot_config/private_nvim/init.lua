@@ -136,6 +136,26 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
+-- Jump to the name of the enclosing function, from anywhere inside its body.
+-- Walks up the treesitter tree to the nearest function/method node. Handy before
+-- grr/grn/etc. Records the jump, so <C-o> goes back.
+vim.keymap.set('n', 'grF', function()
+  local node = vim.treesitter.get_node()
+  while node do
+    if node:type():match 'function' or node:type():match 'method' then
+      local name = node:field('name')[1]
+      if name then
+        local row, col = name:start()
+        vim.cmd "normal! m'"
+        vim.api.nvim_win_set_cursor(0, { row + 1, col })
+        return
+      end
+    end
+    node = node:parent()
+  end
+  vim.notify('No enclosing function with a name found', vim.log.levels.WARN)
+end, { desc = 'Jump to enclosing [F]unction name' })
+
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
@@ -529,26 +549,6 @@ require('lazy').setup({
 
           -- Find references for the word under your cursor.
           map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-
-          -- Find references for the enclosing function, from anywhere inside its body.
-          -- Walks up the treesitter tree to the nearest function/method node, jumps to
-          -- its name, then opens the references picker.
-          map('grF', function()
-            local node = vim.treesitter.get_node()
-            while node do
-              if node:type():match 'function' or node:type():match 'method' then
-                local name = node:field('name')[1]
-                if name then
-                  local row, col = name:start()
-                  vim.api.nvim_win_set_cursor(0, { row + 1, col })
-                  require('telescope.builtin').lsp_references()
-                  return
-                end
-              end
-              node = node:parent()
-            end
-            vim.notify('No enclosing function with a name found', vim.log.levels.WARN)
-          end, '[G]oto Enclosing [F]unction References')
 
           -- Jump to the implementation of the word under your cursor.
           --  Useful when your language has ways of declaring types without an actual implementation.
