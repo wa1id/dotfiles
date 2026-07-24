@@ -136,10 +136,10 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
--- Jump to the name of the enclosing function, from anywhere inside its body.
+-- [G]oto [N]ame of enclosing [F]unction, from anywhere inside its body.
 -- Walks up the treesitter tree to the nearest function/method node. Handy before
 -- grr/grn/etc. Records the jump, so <C-o> goes back.
-vim.keymap.set('n', 'grF', function()
+vim.keymap.set('n', 'gnf', function()
   local node = vim.treesitter.get_node()
   while node do
     if node:type():match 'function' or node:type():match 'method' then
@@ -154,7 +154,7 @@ vim.keymap.set('n', 'grF', function()
     node = node:parent()
   end
   vim.notify('No enclosing function with a name found', vim.log.levels.WARN)
-end, { desc = 'Jump to enclosing [F]unction name' })
+end, { desc = '[G]oto [N]ame of enclosing [F]unction' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
