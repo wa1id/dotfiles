@@ -1,0 +1,8 @@
+{
+  "uuid": "edge-glow@walid.local",
+  "name": "Edge Glow",
+  "description": "Pulses a glow on a single window until that window is focused. Driven over D-Bus by Claude Code hooks, in place of desktop notifications.",
+  "shell-version": ["50"],
+  "session-modes": ["user"],
+  "url": "local"
+}

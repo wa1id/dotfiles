@@ -1,0 +1,38 @@
+#!/bin/bash
+# Enable the edge-glow GNOME extension once chezmoi has dropped it into place.
+#
+# The hashes below are what make this a run_onchange script: they change
+# whenever the extension's own files change, so the script re-runs and can
+# remind you that gnome-shell caches GJS modules -- an edited extension.js
+# does nothing until the shell restarts, which on Wayland means a logout.
+#
+# extension.js:  {{ include (joinPath .chezmoi.sourceDir "dot_local/private_share/private_gnome-shell/extensions/edge-glow@walid.local/extension.js") | sha256sum }}
+# metadata.json: {{ include (joinPath .chezmoi.sourceDir "dot_local/private_share/private_gnome-shell/extensions/edge-glow@walid.local/metadata.json") | sha256sum }}
+set -euo pipefail
+
+UUID="edge-glow@walid.local"
+
+# Never fail an apply over a desktop nicety: bail out quietly anywhere this
+# doesn't apply -- WSL, headless, a non-GNOME session, a box mid-bootstrap.
+command -v gnome-extensions >/dev/null 2>&1 || exit 0
+[ -n "${DBUS_SESSION_BUS_ADDRESS:-}" ] || {
+	echo "edge-glow: no session bus, skipping enable (run 'gnome-extensions enable $UUID' from a GNOME session)."
+	exit 0
+}
+
+if gnome-extensions list --enabled 2>/dev/null | grep -qxF "$UUID"; then
+	echo "edge-glow: already enabled -- log out and back in to load the current extension.js."
+	exit 0
+fi
+
+if gnome-extensions enable "$UUID" 2>/dev/null; then
+	echo "edge-glow: enabled. Log out and back in to load it."
+else
+	# Usually means gnome-shell hasn't rescanned the extensions directory yet,
+	# or metadata.json's shell-version doesn't cover the running shell.
+	echo "edge-glow: could not enable $UUID automatically."
+	echo "  running shell: $(gnome-shell --version 2>/dev/null || echo unknown)"
+	echo "  supported:     $(sed -n 's/.*"shell-version": *\[\([^]]*\)\].*/\1/p' \
+		"$HOME/.local/share/gnome-shell/extensions/$UUID/metadata.json" 2>/dev/null || echo unknown)"
+	echo "  Log out and back in, then: gnome-extensions enable $UUID"
+fi

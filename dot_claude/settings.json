@@ -105,7 +105,7 @@
       "Bash(rm *)"
     ]
   },
-  "model": "claude-fable-5[1m]",
+  "model": "opus[1m]",
   "hooks": {
     "Notification": [
       {
@@ -113,7 +113,40 @@
         "hooks": [
           {
             "type": "command",
-            "command": "notify-send 'Claude Code' 'Claude Code needs your attention'"
+            "command": "~/.claude/hooks/attention-glow.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/attention-glow.sh"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/attention-glow.sh stop"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/attention-glow.sh stop"
           }
         ]
       }
@@ -128,12 +161,14 @@
     "stripe@claude-plugins-official": true
   },
   "effortLevel": "high",
+  "tui": "fullscreen",
   "voice": {
     "enabled": true,
     "mode": "hold"
   },
   "autoMemoryEnabled": false,
   "theme": "dark",
+  "preferredNotifChannel": "terminal_bell",
   "agentPushNotifEnabled": true,
   "autoMode": {
     "allow": [
