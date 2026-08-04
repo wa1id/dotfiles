@@ -143,7 +143,20 @@ vim.keymap.set('n', 'gnf', function()
   local node = vim.treesitter.get_node()
   while node do
     if node:type():match 'function' or node:type():match 'method' then
+      -- Declarations carry their own `name`. Arrow functions and function
+      -- expressions don't, so fall back to whatever binding they're attached to.
       local name = node:field('name')[1]
+      if not name then
+        local parent = node:parent()
+        local ptype = parent and parent:type()
+        if ptype == 'variable_declarator' or ptype == 'public_field_definition' then
+          name = parent:field('name')[1]
+        elseif ptype == 'pair' then
+          name = parent:field('key')[1]
+        elseif ptype == 'assignment_expression' then
+          name = parent:field('left')[1]
+        end
+      end
       if name then
         local row, col = name:start()
         vim.cmd "normal! m'"
