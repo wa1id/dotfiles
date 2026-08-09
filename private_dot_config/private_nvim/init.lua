@@ -762,6 +762,9 @@ require('lazy').setup({
         'prettierd', -- Used to format JS/TS/JSON code
         'eslint', -- Used to lint JS/TS code
         'ts_ls', -- TypeScript LSP server
+        -- nvim-treesitter's `main` branch shells out to the tree-sitter CLI to
+        -- build parsers; without it every :TSUpdate fails with ENOENT.
+        'tree-sitter-cli',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
