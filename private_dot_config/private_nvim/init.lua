@@ -692,8 +692,20 @@ require('lazy').setup({
         -- clangd = {},
         -- gopls = {},
         -- -- pyright = {},
-        -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
+
+        -- Rust. The binary comes from `rustup component add rust-analyzer` rather
+        -- than Mason, so it always matches the active toolchain (a mismatched
+        -- rust-analyzer fails to expand proc macros). It is therefore excluded
+        -- from `ensure_installed` and enabled explicitly further down.
+        rust_analyzer = {
+          settings = {
+            ['rust-analyzer'] = {
+              check = { command = 'clippy' },
+              cargo = { features = 'all' },
+            },
+          },
+        },
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
         --    https://github.com/pmizio/typescript-tools.nvim
@@ -741,7 +753,10 @@ require('lazy').setup({
       --
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
-      local ensure_installed = vim.tbl_keys(servers or {})
+      -- `rust_analyzer` is provided by rustup, not Mason -- see the note above.
+      local ensure_installed = vim.tbl_filter(function(name)
+        return name ~= 'rust_analyzer'
+      end, vim.tbl_keys(servers or {}))
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'prettierd', -- Used to format JS/TS/JSON code
@@ -754,6 +769,10 @@ require('lazy').setup({
         ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
         automatic_installation = false,
       }
+
+      -- mason-lspconfig only auto-enables servers it installed itself, so
+      -- rustup-provided rust-analyzer has to be turned on by hand.
+      vim.lsp.enable 'rust_analyzer'
     end,
   },
 
@@ -965,6 +984,33 @@ require('lazy').setup({
       statusline.section_location = function()
         return '%2l:%-2v'
       end
+
+      -- File explorer that you edit like a normal buffer.
+      --
+      --  - <leader>e opens it at the current file (falls back to the cwd for
+      --    scratch buffers), so you land next to what you were editing.
+      --  - h / l move between parent, current and preview columns; <CR> opens.
+      --  - Rename by editing a line, delete with `dd`, create with `o`, move by
+      --    cutting and pasting lines. Nothing touches disk until you press `=`.
+      require('mini.files').setup {
+        mappings = {
+          go_in_plus = '<CR>', -- open files and close the explorer in one step
+        },
+        windows = {
+          preview = true,
+          width_preview = 60,
+        },
+      }
+
+      vim.keymap.set('n', '<leader>e', function()
+        local files = require 'mini.files'
+        -- Toggle: a second press closes the explorer instead of reopening it.
+        if not files.close() then
+          local path = vim.api.nvim_buf_get_name(0)
+          files.open(vim.uv.fs_stat(path) and path or vim.uv.cwd())
+          files.reveal_cwd()
+        end
+      end, { desc = 'Open file [E]xplorer' })
 
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
