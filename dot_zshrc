@@ -111,8 +111,8 @@ export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 export PATH=$PATH:$ANDROID_HOME/build-tools/35.0.0
 
-# Java (JDK 21 for React Native / Expo)
-export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+# Java. JAVA_HOME is machine-specific (JDK versions differ per box), so set it
+# in ~/.zshrc.local rather than here.
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -149,4 +149,8 @@ command -v pyenv >/dev/null && eval "$(pyenv init -)"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Machine-specific overrides. Not managed by chezmoi, so it survives apply and
+# stays out of the repo -- JAVA_HOME, per-box paths, local-only aliases.
+[ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
 
